@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Mark Attendance</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+</head>
+<body class="bg-light">
+<div class="container py-5">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="card shadow-lg border-0 rounded-4">
+                <div class="card-header bg-primary text-white text-center fs-4 fw-bold">
+                    📋 Mark Attendance
+                </div>
+                <div class="card-body p-4">
+                    <form th:action="@{/attendance/mark}" method="post">
+                        <div class="row g-3">
+                            <div class="col-md-6">
+                                <label class="form-label fw-semibold">Semester</label>
+                                <select class="form-select" name="semesterId" required>
+                                    <option value="" disabled selected>-- Select Semester --</option>
+                                    <option th:each="sem : ${semesters}"
+                                            th:value="${sem.id}" th:text="${sem.name}"></option>
+                                </select>
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label fw-semibold">Section</label>
+                                <select class="form-select" name="sectionId" required>
+                                    <option value="" disabled selected>-- Select Section --</option>
+                                    <option th:each="sec : ${sections}"
+                                            th:value="${sec.id}" th:text="${sec.name}"></option>
+                                </select>
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label fw-semibold">Student</label>
+                                <select class="form-select" name="studentId" required>
+                                    <option value="" disabled selected>-- Select Student --</option>
+                                    <option th:each="student : ${students}"
+                                            th:value="${student.id}"
+                                            th:text="${student.name + ' (' + student.rollNo + ')'}"></option>
+                                </select>
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label fw-semibold">Course</label>
+                                <select name="courseId" class="form-select" required>
+                                    <option value="" disabled selected>-- Select Course --</option>
+                                    <option th:each="course : ${courses}"
+                                            th:value="${course.id}" th:text="${course.name}"></option>
+                                </select>
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label fw-semibold">Subject</label>
+                                <select name="subjectId" class="form-select" required>
+                                    <option value="" disabled selected>-- Select Subject --</option>
+                                    <option th:each="subject : ${subjects}"
+                                            th:value="${subject.id}" th:text="${subject.name}"></option>
+                                </select>
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label fw-semibold">Date</label>
+                                <input type="date" class="form-control" name="date" th:value="${today}" required>
+                            </div>
+                            <div class="col-md-12">
+                                <label class="form-label fw-semibold">Status</label>
+                                <div class="form-check form-switch">
+                                    <input class="form-check-input" type="checkbox" name="present" value="true" id="presentSwitch">
+                                    <label class="form-check-label" for="presentSwitch">Present</label>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="d-flex justify-content-between mt-4">
+                            <a href="/" class="btn btn-outline-secondary">⬅ Back</a>
+                            <button type="submit" class="btn btn-success">✅ Save Attendance</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>

@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+<head>
+    <meta charset="UTF-8">
+    <title>Attendance Dashboard</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body layout:decorate="~{fragments/layout}">
+<section layout:fragment="section">
+    <div class="container mt-4">
+        <h2 class="mb-4">Attendance Dashboard</h2>
+
+        <!-- Attendance Filter Form -->
+        <form method="get" action="/attendance/view" class="row g-3 mb-4 align-items-end">
+            <div class="col-md-3">
+                <label for="date" class="form-label">Select Date:</label>
+                <input type="date" id="date" name="date" class="form-control" required>
+            </div>
+
+            <div class="col-md-3">
+                <label class="form-label">Section:</label>
+                <select name="sectionId" class="form-select">
+                    <option value="">All Sections</option>
+                    <option th:each="section : ${sections}"
+                            th:value="${section.id}"
+                            th:text="${section.name}"></option>
+                </select>
+            </div>
+
+            <div class="col-md-3">
+                <label class="form-label">Semester:</label>
+                <select name="semesterId" class="form-select">
+                    <option value="">All Semesters</option>
+                    <option th:each="semester : ${semesters}"
+                            th:value="${semester.id}"
+                            th:text="${semester.name}"></option>
+                </select>
+            </div>
+
+            <div class="col-md-3">
+                <button type="submit" class="btn btn-primary">Filter</button>
+            </div>
+        </form>
+
+        <!-- Attendance Table -->
+        <table class="table table-bordered">
+            <thead class="table-light">
+                <tr>
+                    <th>Student Name</th>
+                    <th>Roll No</th>
+                    <th>Section</th>
+                    <th>Semester</th>
+                    <th>Date</th>
+                    <th>Status</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr th:each="record : ${attendanceList}">
+                    <td th:text="${record.student.name}">Name</td>
+                    <td th:text="${record.student.rollNo}">Roll</td>
+                    <td th:text="${record.student.section.name}">Section</td>
+                    <td th:text="${record.student.semester.name}">Semester</td>
+                    <td th:text="${record.date}">Date</td>
+                    <td>
+                        <span th:if="${record.present}" class="badge bg-success">Present</span>
+                        <span th:unless="${record.present}" class="badge bg-danger">Absent</span>
+                    </td>
+                </tr>
+                <!-- Null-safe empty check -->
+                <tr th:if="${#lists.isEmpty(attendanceList)}">
+                    <td colspan="6" class="text-center text-muted">No records found for selected filters.</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</section>
+</body>
+</html>
